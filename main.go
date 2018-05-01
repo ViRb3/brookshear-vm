@@ -32,8 +32,8 @@ execute - executes an input asm file`)
 	}
 	flag.Parse()
 
-	if strings.TrimSpace(*filePath) == "" {
-		flag.PrintDefaults()
+	if strings.TrimSpace(*filePath) == "" || strings.TrimSpace(*mode) == "" {
+		flag.Usage()
 		return
 	}
 
@@ -56,8 +56,7 @@ execute - executes an input asm file`)
 }
 
 func preHelp() {
-	println()
-	println("A brookshear virtual machine implementation capable of executing and compiling brookshear assembly instructions")
+	println("A brookshear virtual machine implementation capable of executing and compiling brookshear assembly instructions.")
 	println()
 }
 
