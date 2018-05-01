@@ -22,7 +22,7 @@ func Compile(instrStr []string, srcFilePath string) error {
 
 	for _, instr := range instrs {
 		var bytes = []byte{vm.CombineNibblesToByte(instr.Nibbles[0], instr.Nibbles[1]),
-			vm.CombineNibblesToByte(instr.Nibbles[0], instr.Nibbles[1])}
+			vm.CombineNibblesToByte(instr.Nibbles[2], instr.Nibbles[3])}
 		file.Write(bytes)
 	}
 	fmt.Println("Done!")

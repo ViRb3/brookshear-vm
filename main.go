@@ -79,4 +79,7 @@ func runInstrs(instrsStr []string, verboseLvl int) {
 	fmt.Println()
 	fmt.Println("Memory dump (16x16):")
 	vm.PrintMemory()
+	fmt.Println()
+	fmt.Println("Registers (16):")
+	vm.PrintRegisters()
 }

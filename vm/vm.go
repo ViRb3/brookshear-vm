@@ -88,6 +88,13 @@ func (vm *VM) PrintMemory() {
 	}
 }
 
+func (vm *VM) PrintRegisters() {
+	for _, regVal := range vm.registers {
+		fmt.Printf("%2X", regVal)
+		fmt.Print(" ")
+	}
+}
+
 func (vm *VM) printIfVerbose(data string) {
 	if vm.verboseLvl > 0 {
 		fmt.Println(data)
