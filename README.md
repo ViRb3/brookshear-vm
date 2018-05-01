@@ -8,7 +8,7 @@
 | |_) | | | (_) | (_) |   <\__ \ | | |  __/ (_| | |         \ \_/ / |  | |
 |_.__/|_|  \___/ \___/|_|\_\___/_| |_|\___|\__,_|_|          \___/\_|  |_/
 ```
-A brookshear virtual machine implementation capable of executing and compiling brookshear assembly insructions.
+A brookshear virtual machine implementation capable of executing and compiling brookshear assembly instructions.
 
 ## Features
 

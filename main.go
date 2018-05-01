@@ -57,7 +57,7 @@ execute - executes an input asm file`)
 
 func preHelp() {
 	println()
-	println("A brookshear virtual machine implementation capable of executing and compiling brookshear assembly insructions")
+	println("A brookshear virtual machine implementation capable of executing and compiling brookshear assembly instructions")
 	println()
 }
 
