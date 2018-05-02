@@ -41,18 +41,25 @@ func init() {
 }
 
 func runBin() {
-	instrs, err := io.Decompile(Input)
+	err := doRunBin()
 	if err != nil {
-		fmt.Printf("Error during binary execution\n%+v\n", err)
+		fmt.Printf("Error during binary execution:\n%+v\n", err)
 		return
 	}
-	startVM(instrs)
+}
+
+func doRunBin() error {
+	instrs, err := io.Decompile(Input)
+	if err != nil {
+		return err
+	}
+	return startVM(instrs)
 }
 
 func runAsm() {
 	var err = doRunAsm()
 	if err != nil {
-		fmt.Printf("Error during assembly execution\n%+v\n", err)
+		fmt.Printf("Error during assembly execution:\n%+v\n", err)
 	}
 }
 
@@ -65,8 +72,7 @@ func doRunAsm() error {
 	if err != nil {
 		return err
 	}
-	startVM(instrs)
-	return nil
+	return startVM(instrs)
 }
 
 func startVM(instrs []*vm.Instruction) error {
