@@ -1,14 +1,11 @@
-package compiler
+package io
 
 import (
-	"fmt"
 	"brookshear-vm/vm"
 	"os"
 )
 
-func Compile(instrStr []string, srcFilePath string) error {
-	var dstFilePath = srcFilePath + ".bin"
-	fmt.Println("Compiling to file:", dstFilePath)
+func Compile(instrStr []string, dstFilePath string) error {
 	instrs, err := vm.ParseInstructions(instrStr)
 	if err != nil {
 		return err
@@ -25,6 +22,5 @@ func Compile(instrStr []string, srcFilePath string) error {
 			vm.CombineNibblesToByte(instr.Nibbles[2], instr.Nibbles[3])}
 		file.Write(bytes)
 	}
-	fmt.Println("Done!")
 	return nil
 }

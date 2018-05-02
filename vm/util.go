@@ -1,6 +1,12 @@
 package vm
 
-import "strconv"
+import (
+	"strconv"
+	"strings"
+	"fmt"
+)
+
+var commentPrefixes = []string{"#", "//", ";"}
 
 type Nibble byte
 
@@ -40,9 +46,49 @@ func CombineNibblesToByte(n1 Nibble, n2 Nibble) byte {
 	return byte(n1<<4 | n2)
 }
 
-func ByteArrayToNibbleArray(byteArr []byte) (nibbleArr []Nibble) {
+// 1 byte = 1 nibble
+func BytesToNibbles(byteArr []byte) (nibbleArr []Nibble) {
 	for _, b := range byteArr {
 		nibbleArr = append(nibbleArr, Nibble(b))
 	}
 	return
+}
+
+// 1 byte = 2 nibbles
+func ByteArrayToNibbleArray(bytes []byte) (nibbles []Nibble) {
+	for _, byte := range bytes {
+		nibbles = append(nibbles, SplitByteToNibbles(byte)...)
+	}
+	return nibbles
+}
+
+func IsIgnoredLine(item string) bool {
+	if strings.TrimSpace(item) == "" {
+		return true
+	}
+	for _, comment := range commentPrefixes {
+		if strings.HasPrefix(item, comment) {
+			return true
+		}
+	}
+	return false
+}
+
+func RemoveTrailingComment(str string) string {
+	for _, comment := range commentPrefixes {
+		var commentIndex = strings.Index(str, comment)
+		if commentIndex < 0 {
+			continue
+		}
+		str = str[:strings.Index(str, comment)]
+	}
+	return str
+}
+
+func PrettyPrintNibbles(nibbles []Nibble) (output string) {
+
+	for _, nibble := range nibbles {
+		output += fmt.Sprintf("%X", nibble)
+	}
+	return output
 }

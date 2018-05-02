@@ -22,6 +22,7 @@ func TestBytesToInstr(t *testing.T) {
 	testInstrBytes([]Nibble{0xc, 0x0, 0x0, 0x0}, t)
 }
 
+// must not match, since some bytes are supposed to be empty (0)
 func TestBytesToInstrFail(t *testing.T) {
 	testInstrBytesFail([]Nibble{0x0, 0x2, 0x3, 0x4}, t)
 	testInstrBytesFail([]Nibble{0x4, 0x2, 0x3, 0x4}, t)
@@ -29,7 +30,6 @@ func TestBytesToInstrFail(t *testing.T) {
 	testInstrBytesFail([]Nibble{0xc, 0x2, 0x3, 0x4}, t)
 }
 
-// must fail, since some bytes must not match
 func testInstrBytesFail(instrBytes []Nibble, t *testing.T) {
 	instr, err := ParseFromNibbles(instrBytes)
 	if err != nil {
