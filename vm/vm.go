@@ -46,7 +46,7 @@ func (vm *VM) Execute(instr *Instruction) {
 func (vm *VM) Run(instrs[]*Instruction) error {
 	vm.loadInstructionsInMemory(instrs)
 
-	vm.printIfVerbose("Execution flow:")
+	vm.printIfVerbose("Execution flow:\n")
 	if err := vm.instrLoop(); err != nil {
 		return err
 	}
@@ -57,12 +57,14 @@ func (vm *VM) instrLoop() error {
 	for !vm.halt {
 		var nextBytes = vm.memory[vm.pc : vm.pc+4]
 		var instr, err = ParseFromNibbles(BytesToNibbles(nextBytes))
-		vm.printIfVerbose(fmt.Sprintf("%-9s %-4x %s", PrettyPrintNibbles(BytesToNibbles(nextBytes)), vm.pc, instr.GetText()))
+		// don't add new line yet to append more information in later calls
+		vm.printIfVerbose(fmt.Sprintf("%-6s %-4x %-19s", PrettyPrintNibbles(BytesToNibbles(nextBytes)), vm.pc, instr.GetText()))
 		if err != nil {
 			return err
 		}
 		vm.Execute(instr)
 		vm.pc += 4
+		vm.printIfVerbose("\n")
 	}
 	return nil
 }

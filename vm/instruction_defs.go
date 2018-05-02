@@ -95,7 +95,7 @@ func makeMoveRegToMem() (instr *Instruction) {
 	return instr
 }
 
-//TODO: Check of ignored nibble is properly handled
+//TODO: Check of ignored nibble is properly handled in MoveRegToReg
 func makeMoveRegToReg() (instr *Instruction) {
 	instr = NewInstr()
 	instr.Opcode = "mov"

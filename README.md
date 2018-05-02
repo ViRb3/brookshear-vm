@@ -8,26 +8,25 @@
 | |_) | | | (_) | (_) |   <\__ \ | | |  __/ (_| | |         \ \_/ / |  | |
 |_.__/|_|  \___/ \___/|_|\_\___/_| |_|\___|\__,_|_|          \___/\_|  |_/
 ```
-A brookshear virtual machine implementation capable of executing and compiling brookshear assembly instructions.
+
+A brookshear virtual machine with support for step-by-step emulation, compilation, and decompilation.
 
 ## Features
 
-* Executes brookshear assembly instructions
-* Three levels of verbosity, allowing for easy step-by-step debugging of code
-* Ability to compile to binary (brookshear bytecode)
+* Run an assembly or binary file
+* Various verbosity levels allow detail-rich, step-by-step debugging
+* Compile assembly instructions to bytecode in a binary file
+* Decompile bytecode from a binary file
 
-## Help screen (run with `-help`)
+## Help screen (run with `-h` or `--help`)
 
 ```
-  -a string
-    	(REQUIRED) Action to perform, one of:
-    	compile - compiles an input asm file to binary
-    	execute - executes an input asm file
-  -f string
-    	(REQUIRED) Input file. Ignores blank lines or lines starting with '//' or '#'
-  -v int
-    	Set level of verbosity, one of:
-    	0 - print memory dump on end
-    	1 - print each executed instruction
-    	2 - print data changes on each executed instruction
+Usage:
+  brookshear-vm [command]
+
+Available Commands:
+  compile     Compile assembly instructions to bytecode in a binary file
+  decompile   Decompile bytecode from a binary file
+  help        Help about any command
+  run         Run an assembly or binary file
 ```

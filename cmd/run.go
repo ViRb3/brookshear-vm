@@ -26,7 +26,6 @@ func run(cmd *cobra.Command, args []string) {
 	}
 }
 
-//TODO: Support verbosity lvl 2
 func init() {
 	rootCmd.AddCommand(runCmd)
 

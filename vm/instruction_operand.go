@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-//TODO: Support for stacked intervals
+//TODO: Support for parsing with stacked intervals
 var operandRegex = regexp.MustCompile(` -> |, | `)
 
 var addressRegex = regexp.MustCompile(`^\[([0-9a-f]{1,2})\]$`)

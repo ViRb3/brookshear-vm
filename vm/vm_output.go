@@ -19,20 +19,12 @@ func (vm *VM) PrintRegisters() {
 
 func (vm *VM) printIfVerbose(data string) {
 	if vm.verboseLvl > 0 {
-		fmt.Println(data)
+		fmt.Print(data)
 	}
 }
 
 func (vm *VM) printifVVerbose(data string) {
 	if vm.verboseLvl > 1 {
-		fmt.Println(data)
+		fmt.Print(data)
 	}
-}
-
-func printBeforeData(data byte) {
-	fmt.Sprintf("Before: %x", data)
-}
-
-func printAfterData(data byte) {
-	fmt.Sprintf("After: %x", data)
 }
