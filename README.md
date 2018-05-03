@@ -13,10 +13,10 @@ A [brookshear](https://uk.mathworks.com/matlabcentral/fileexchange/22593-extende
 
 ## Features
 
-* Run assembly code or bytecode binary files
+* Run assembly code or binary bytecode
 * Various verbosity levels allow detail-rich, step-by-step debugging
-* Compile assembly instructions to bytecode in binary files
-* Decompile bytecode to assembly instructions from binary files
+* Compile assembly instructions to bytecode in a binary file
+* Decompile bytecode from a binary file to assembly instructions
 * Extra instruction *(opcode `0xD`)* for relative (offset) branch
 
 ## Relative branch if equal
@@ -28,7 +28,6 @@ Bytecode | Instruction  | Comment
 -----------------------------------------------------------------------
 D104     | jmpeq +4, r1 | ; branch forward by 4 bytes (2 instructions)
 D312     | jmpeq -2, r3 | ; branch backward by 2 bytes (1 instruction)
-
 ```
 
 It accepts a single nibble as offset, and can be either positive (`+4`) or negative (`-2`). When compiling, the instruction is encoded as follows:
@@ -40,15 +39,8 @@ O - branch direction      [0-1] : 0 for +/forward, 1 for -/backward
 X - offset                [0-F]
 ```
 
-## Help screen (run with `-h` or `--help`)
+## [Releases](./releases)
 
-```
-Usage:
-  brookshear-vm [command]
+*For general help run with argument `-h` or `--help`*
 
-Available Commands:
-  compile     Compile assembly instructions to bytecode in a binary file
-  decompile   Decompile bytecode from a binary file
-  help        Help about any command
-  run         Run an assembly or binary file
-```
+*For help on the extra instructions run the command `extendedHelp`*

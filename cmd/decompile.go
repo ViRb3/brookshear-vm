@@ -10,7 +10,7 @@ import (
 // decompileCmd represents the decompile command
 var decompileCmd = &cobra.Command{
 	Use:   "decompile",
-	Short: "Decompile bytecode from a binary file",
+	Short: "Decompile bytecode from a binary file to assembly instructions",
 	Run: decompile,
 }
 
