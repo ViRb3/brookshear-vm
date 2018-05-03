@@ -11,6 +11,7 @@ import (
 var compileCmd = &cobra.Command{
 	Use:   "compile",
 	Short: "Compile assembly instructions to bytecode in a binary file",
+	Example: `compile -f sample.asm.txt -o sample.bin`,
 	Run:   compile,
 }
 
@@ -37,7 +38,7 @@ func init() {
 	rootCmd.AddCommand(compileCmd)
 
 	compileCmd.Flags().StringVarP(&Input, "file", "f", "", `Input assembly file path`)
-	compileCmd.Flags().StringVarP(&Output, "out", "o", "", `Output file path`)
+	compileCmd.Flags().StringVarP(&Output, "out", "o", "", `Output binary file path`)
 
 	compileCmd.MarkFlagRequired("file")
 	compileCmd.MarkFlagRequired("out")

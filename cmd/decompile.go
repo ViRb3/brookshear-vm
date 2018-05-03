@@ -11,6 +11,7 @@ import (
 var decompileCmd = &cobra.Command{
 	Use:   "decompile",
 	Short: "Decompile bytecode from a binary file to assembly instructions",
+	Example: `decompile -f sample.bin`,
 	Run: decompile,
 }
 
@@ -38,7 +39,7 @@ func doDecompile() error {
 func init() {
 	rootCmd.AddCommand(decompileCmd)
 
-	decompileCmd.Flags().StringVarP(&Input, "file", "f", "", `Input assembly file path`)
+	decompileCmd.Flags().StringVarP(&Input, "file", "f", "", `Input binary file path`)
 
 	decompileCmd.MarkFlagRequired("file")
 }

@@ -11,6 +11,8 @@ import (
 var runCmd = &cobra.Command{
 	Use:   "run",
 	Short: "Run an assembly or binary file",
+	Example: `run -f sample.asm.txt -t asm
+run -f sample.asm.bin -t bin -v 2`,
 	Run:   run,
 }
 
@@ -34,7 +36,9 @@ func init() {
 1 - print each executed instruction
 2 - print data changes on each executed instruction`)
 	runCmd.Flags().StringVarP(&Input, "file", "f", "", `Input file path. For assembly, supports comments: '//', '#' and ';'`)
-	runCmd.Flags().StringVarP(&InputType, "input-type", "t", "", `Input file type. Format: <asm|bin>`)
+	runCmd.Flags().StringVarP(&InputType, "input-type", "t", "", `Input file type. One of:
+asm - assembly instructions
+bin - binary bytecode`)
 
 	runCmd.MarkFlagRequired("file")
 	runCmd.MarkFlagRequired("input-type")
