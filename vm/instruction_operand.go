@@ -14,10 +14,12 @@ var operandRegex = regexp.MustCompile(` -> |, | `)
 var addressRegex = regexp.MustCompile(`^\[([0-9a-f]{1,2})\]$`)
 var valueRegex = regexp.MustCompile(`^([0-9a-f]{1,2})$`)
 var registerRegex = regexp.MustCompile(`^r([0-9a-f])$`)
+var offsetRegex = regexp.MustCompile(`^[+-]([0-9a-f])$`)
 
 type Operand struct {
 	Type  OperandType
 	Value byte
+	Extra byte // = 1 if operand is offset and value is negative
 }
 
 type OperandType int
@@ -26,15 +28,16 @@ const (
 	OperandMemory   = iota
 	OperandRegister
 	OperandValue
+	OperandOffset
 )
 
 func NewOperand(operandType OperandType, value string) Operand {
 	var valueInt, _ = strconv.ParseInt(value, 16, 0)
-	return Operand{operandType, byte(valueInt)}
+	return Operand{operandType, byte(valueInt), 0}
 }
 
 func NewOperandBlank(operandType OperandType) Operand {
-	return Operand{operandType, 0}
+	return Operand{operandType, 0, 0}
 }
 
 // returns formatted operand
@@ -71,6 +74,12 @@ func parseOperand(operandStr string) (Operand, error) {
 		return operand, nil
 	}
 	if operand, err := tryParseAsOperandType(operandStr, registerRegex, OperandRegister); err == nil {
+		return operand, nil
+	}
+	if operand, err := tryParseAsOperandType(operandStr, offsetRegex, OperandOffset); err == nil {
+		if strings.HasPrefix(operandStr, "-") {
+			operand.Extra = 1
+		}
 		return operand, nil
 	}
 	return Operand{}, errors.New("unable to parse operand")

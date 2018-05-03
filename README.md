@@ -9,14 +9,36 @@
 |_.__/|_|  \___/ \___/|_|\_\___/_| |_|\___|\__,_|_|          \___/\_|  |_/
 ```
 
-A brookshear virtual machine with support for step-by-step emulation, compilation, and decompilation.
+A [brookshear](https://uk.mathworks.com/matlabcentral/fileexchange/22593-extended-brookshear-machine-emulator-and-assembler?focused=5204034&tab=example) virtual machine with support for step-by-step emulation, compilation, and decompilation.
 
 ## Features
 
-* Run an assembly or binary file
+* Run assembly code or bytecode binary files
 * Various verbosity levels allow detail-rich, step-by-step debugging
-* Compile assembly instructions to bytecode in a binary file
-* Decompile bytecode from a binary file
+* Compile assembly instructions to bytecode in binary files
+* Decompile bytecode to assembly instructions from binary files
+* Extra instruction *(opcode `0xD`)* for relative (offset) branch
+
+## Relative branch if equal
+
+```
+Examples:
+
+Bytecode | Instruction  | Comment
+-----------------------------------------------------------------------
+D104     | jmpeq +4, r1 | // branch forward by 4 bytes (2 instructions)
+D312     | jmpeq -2, r3 | // branch backward by 2 bytes (1 instruction)
+
+```
+
+It accepts a single nibble as offset, and can be either positive (`+4`) or negative (`-2`). When compiling, the instruction is encoded as follows:
+
+```
+D - opcode                  D
+R - destination register  [0-F]
+O - branch direction      [0-1] : 0 for +/forward, 1 for -/backward
+X - offset                [0-F]
+```
 
 ## Help screen (run with `-h` or `--help`)
 

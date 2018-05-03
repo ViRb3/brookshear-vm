@@ -42,6 +42,11 @@ func (instr *InstructionData) GetOpValAt(i int) byte {
 	return instr.Operands[i].Value
 }
 
+// Get operand extra value at
+func (instr *InstructionData) GetOpExtraAt(i int) byte {
+	return instr.Operands[i].Extra
+}
+
 func (instr *InstructionData) GetOperandsInOrder(order []int) []Operand {
 	var result []Operand
 	for _, i := range order {

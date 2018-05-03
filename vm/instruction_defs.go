@@ -4,7 +4,7 @@ import "fmt"
 
 var Instructions = []*Instruction{makeNop(), makeMoveMemToReg(), makeMoveValToReg(), makeMoveRegToMem(),
 	makeMoveRegToReg(), makeAddIRegToReg(), makeAddFRegToReg(), makeAndRegToReg(), makeOrRegToReg(), makeXorRegToReg(),
-	makeRotReg(), makeJmpIfEq(), makeHalt()}
+	makeRotReg(), makeJmpIfEq(), makeHalt(), makeJmpIfEqR()}
 
 func makeNop() (instr *Instruction) {
 	instr = NewInstr()
@@ -293,6 +293,41 @@ func makeHalt() (instr *Instruction) {
 	}
 	instr.NewInstance = func() *Instruction {
 		return makeHalt()
+	}
+	return instr
+}
+
+// extra instruction, jump to offset from PC
+func makeJmpIfEqR() (instr *Instruction) {
+	instr = NewInstr()
+	instr.Opcode = "jmpeq"
+	instr.OpcodeNibble = 0xd
+	instr.Operands = []Operand{NewOperandBlank(OperandOffset), NewOperandBlank(OperandRegister)}
+	instr.Format = instr.Opcode + " %s%x, r%x"
+	instr.DestOperandIndex = -1
+	instr.Execute = func(vm *VM) {
+		var jmpAddr = vm.pc
+		if instr.Operands[0].Extra == 1 {
+			jmpAddr -= instr.Operands[0].Value
+		} else {
+			jmpAddr += instr.Operands[0].Value
+		}
+		vm.doJmpIfEq(jmpAddr, instr.Operands[1].Value)
+	}
+	instr.FromNibbles = func(nibbles []Nibble) string {
+		var sign string
+		if nibbles[2] == 1 {
+			sign = "-"
+		} else {
+			sign = "+"
+		}
+		return fmt.Sprintf(instr.Format, sign, nibbles[3], nibbles[1])
+	}
+	instr.ToNibbles = func() []Nibble {
+		return append([]Nibble{instr.OpcodeNibble, Nibble(instr.GetOpValAt(1)), Nibble(instr.GetOpExtraAt(0))}, Nibble(instr.GetOpValAt(0)))
+	}
+	instr.NewInstance = func() *Instruction {
+		return makeJmpIfEqR()
 	}
 	return instr
 }

@@ -8,7 +8,7 @@ import (
 type VM struct {
 	memory     []byte
 	registers  []byte
-	pc         byte
+	pc         byte // TODO: Prevent overflow/underflow
 	halt       bool
 	verboseLvl int
 }
@@ -43,7 +43,7 @@ func (vm *VM) Execute(instr *Instruction) {
 	instr.Execute(vm)
 }
 
-func (vm *VM) Run(instrs[]*Instruction) error {
+func (vm *VM) Run(instrs []*Instruction) error {
 	vm.loadInstructionsInMemory(instrs)
 
 	vm.printIfVerbose("Execution flow:\n")
@@ -55,8 +55,8 @@ func (vm *VM) Run(instrs[]*Instruction) error {
 
 func (vm *VM) instrLoop() error {
 	for !vm.halt {
-		if int(vm.pc)+2 == len(vm.memory) {
-			return errors.New("reached end of memory")
+		if int(vm.pc)+2 >= len(vm.memory) {
+			return errors.New("outside bounds of memory")
 		}
 		var nextBytes = vm.memory[vm.pc : vm.pc+2]
 		var nextNibbles = ByteArrayToNibbleArray(nextBytes)
@@ -72,7 +72,7 @@ func (vm *VM) instrLoop() error {
 		// if there's a changed register or memory cell, log that in VV
 		if instr.DestOperandIndex > -1 {
 			var destName = instr.Operands[instr.DestOperandIndex].ToString()
-			vm.printifVVerbose( fmt.Sprintf("%-5s: ", destName))
+			vm.printifVVerbose(fmt.Sprintf("%-5s: ", destName))
 		}
 
 		vm.Execute(instr)
@@ -92,7 +92,7 @@ func (vm *VM) loadInstructionsInMemory(instrs []*Instruction) {
 	vm.pc = 0
 }
 
-func makeInstructionParseError(err error, instrStr string, i int)(error) {
+func makeInstructionParseError(err error, instrStr string, i int) (error) {
 	err = errors.New(fmt.Sprintf("%s\nInstruction: %s\nLine: %d", err.Error(), instrStr, i+1))
 	return err
 }

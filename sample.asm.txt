@@ -1,3 +1,5 @@
+; loop demo, jumps back 4 times before exiting
+
 nop
 # i
 mov fa -> r1
