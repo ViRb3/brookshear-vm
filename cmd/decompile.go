@@ -16,7 +16,7 @@ var decompileCmd = &cobra.Command{
 
 func decompile(cmd *cobra.Command, args []string) {
 	if err := doDecompile(); err != nil {
-		fmt.Printf("Error during binary decompilation\n%+v\n", err)
+		fmt.Printf("Error during binary decompilation:\n%+v\n", err)
 		return
 	}
 }
@@ -30,7 +30,7 @@ func doDecompile() error {
 	//fmt.Println("Done!")
 
 	for _, instr := range instrStr {
-		fmt.Println(instr.GetText())
+		fmt.Println(instr.ToString())
 	}
 	return nil
 }

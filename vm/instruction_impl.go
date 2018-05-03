@@ -88,7 +88,7 @@ func (vm *VM) doJmpIfEq(val byte, reg byte) {
 		// account for the pc+4 every cycle
 		// TODO: Cleaner approach for PC fix?
 		if vm.registers[reg] == vm.registers[0] {
-			vm.pc = val - 4
+			vm.pc = val - 2
 		}
 	}, nil)
 
@@ -107,6 +107,6 @@ func (vm *VM) executeInstruction(action func(), dstValue *byte) {
 		var oldVal = *dstValue
 		action()
 		var newVal = *dstValue
-		vm.printifVVerbose(fmt.Sprintf(" %X -> %X", oldVal, newVal))
+		vm.printifVVerbose(fmt.Sprintf("%X -> %X", oldVal, newVal))
 	}
 }

@@ -3,7 +3,6 @@ package vm
 import (
 	"strconv"
 	"strings"
-	"fmt"
 )
 
 var commentPrefixes = []string{"#", "//", ";"}
@@ -47,7 +46,7 @@ func CombineNibblesToByte(n1 Nibble, n2 Nibble) byte {
 }
 
 // 1 byte = 1 nibble
-func BytesToNibbles(byteArr []byte) (nibbleArr []Nibble) {
+func ByteArrayAsNibbleArray(byteArr []byte) (nibbleArr []Nibble) {
 	for _, b := range byteArr {
 		nibbleArr = append(nibbleArr, Nibble(b))
 	}
@@ -83,12 +82,4 @@ func RemoveTrailingComment(str string) string {
 		str = str[:strings.Index(str, comment)]
 	}
 	return str
-}
-
-func PrettyPrintNibbles(nibbles []Nibble) (output string) {
-
-	for _, nibble := range nibbles {
-		output += fmt.Sprintf("%X", nibble)
-	}
-	return output
 }

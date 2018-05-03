@@ -6,9 +6,10 @@ import (
 )
 
 type Instruction struct {
-	Opcode       string // e.g. mov
-	OpcodeNibble Nibble
-	Format       string // e.g. mov [%x] -> r%x
+	Opcode           string // e.g. mov
+	OpcodeNibble     Nibble
+	Format           string // e.g. mov [%x] -> r%x
+	DestOperandIndex int    // operand index the instruction modifies (register or memory cell); -1 for none
 	InstructionData
 	InstructionMethods
 }
@@ -26,7 +27,13 @@ type InstructionData struct {
 	Nibbles    []Nibble
 }
 
-func (instr *Instruction) GetText() string {
+func NewInstr() *Instruction {
+	var instr = &Instruction{}
+	instr.DestOperandIndex = -1
+	return instr
+}
+
+func (instr *Instruction) ToString() string {
 	return instr.FromNibbles(instr.Nibbles)
 }
 
@@ -44,6 +51,7 @@ func (instr *InstructionData) GetOperandsInOrder(order []int) []Operand {
 }
 
 func Parse(instrStr string, sourceIndex int) (instr *Instruction, err error) {
+	instrStr = strings.ToLower(instrStr)
 	var instrData InstructionData
 
 	if err := instrData.parseOperands(instrStr); err != nil {
@@ -72,7 +80,8 @@ func ParseFromNibbles(nibbles []Nibble) (*Instruction, error) {
 func matchWithTemplate(instrStr string, instrData InstructionData) (*Instruction, error) {
 	// match parsed data with defined instruction
 	for _, instrTemplate := range Instructions {
-		if strings.SplitN(instrStr, " ", 2)[0] != instrTemplate.Opcode {
+		var instrOpcode = strings.SplitN(instrStr, " ", 2)[0]
+		if instrOpcode != instrTemplate.Opcode {
 			continue
 		}
 		if len(instrData.Operands) != len(instrTemplate.Operands) {

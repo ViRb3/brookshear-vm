@@ -55,15 +55,28 @@ func (vm *VM) Run(instrs[]*Instruction) error {
 
 func (vm *VM) instrLoop() error {
 	for !vm.halt {
-		var nextBytes = vm.memory[vm.pc : vm.pc+4]
-		var instr, err = ParseFromNibbles(BytesToNibbles(nextBytes))
-		// don't add new line yet to append more information in later calls
-		vm.printIfVerbose(fmt.Sprintf("%-6s %-4x %-19s", PrettyPrintNibbles(BytesToNibbles(nextBytes)), vm.pc, instr.GetText()))
+		if int(vm.pc)+2 == len(vm.memory) {
+			return errors.New("reached end of memory")
+		}
+		var nextBytes = vm.memory[vm.pc : vm.pc+2]
+		var nextNibbles = ByteArrayToNibbleArray(nextBytes)
+		var instr, err = ParseFromNibbles(nextNibbles)
 		if err != nil {
 			return err
 		}
+
+		// don't add new line yet to append more information in later calls
+		var logData = fmt.Sprintf("%-6s %-4x %-22s", PrintNibbles(nextNibbles), vm.pc, instr.ToString())
+		vm.printIfVerbose(logData)
+
+		// if there's a changed register or memory cell, log that in VV
+		if instr.DestOperandIndex > -1 {
+			var destName = instr.Operands[instr.DestOperandIndex].ToString()
+			vm.printifVVerbose( fmt.Sprintf("%-5s: ", destName))
+		}
+
 		vm.Execute(instr)
-		vm.pc += 4
+		vm.pc += 2
 		vm.printIfVerbose("\n")
 	}
 	return nil
@@ -71,11 +84,10 @@ func (vm *VM) instrLoop() error {
 
 func (vm *VM) loadInstructionsInMemory(instrs []*Instruction) {
 	for _, instr := range instrs {
-		var nibbles = instr.Nibbles
-		for i := 0; i < 4; i++ {
-			vm.memory[vm.pc] = byte(nibbles[i])
-			vm.pc++
-		}
+		vm.memory[vm.pc] = CombineNibblesToByte(instr.Nibbles[0], instr.Nibbles[1])
+		vm.pc++
+		vm.memory[vm.pc] = CombineNibblesToByte(instr.Nibbles[2], instr.Nibbles[3])
+		vm.pc++
 	}
 	vm.pc = 0
 }

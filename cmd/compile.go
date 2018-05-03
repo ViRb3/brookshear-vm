@@ -16,7 +16,7 @@ var compileCmd = &cobra.Command{
 
 func compile(cmd *cobra.Command, args []string) {
 	if err := doCompile(); err != nil {
-		fmt.Printf("Error during assembly compilation\n%+v\n", err)
+		fmt.Printf("Error during assembly compilation:\n%+v\n", err)
 		return
 	}
 }

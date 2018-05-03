@@ -5,6 +5,7 @@ import (
 	"regexp"
 	"github.com/pkg/errors"
 	"strconv"
+	"fmt"
 )
 
 //TODO: Support for parsing with stacked intervals
@@ -36,6 +37,17 @@ func NewOperandBlank(operandType OperandType) Operand {
 	return Operand{operandType, 0}
 }
 
+// returns formatted operand
+func (op *Operand) ToString() string {
+	switch op.Type {
+	case OperandRegister:
+		return fmt.Sprintf("r%x", op.Value)
+	case OperandMemory:
+		return fmt.Sprintf("[%x]", op.Value)
+	}
+	return ""
+}
+
 func (instr *InstructionData) parseOperands(instrStr string) (error) {
 	// also remove opcode at index 0
 	var operands = operandRegex.Split(strings.TrimSpace(instrStr), -1)[1:]
@@ -52,8 +64,6 @@ func (instr *InstructionData) parseOperands(instrStr string) (error) {
 }
 
 func parseOperand(operandStr string) (Operand, error) {
-	operandStr = strings.ToLower(operandStr)
-
 	if operand, err := tryParseAsOperandType(operandStr, addressRegex, OperandMemory); err == nil {
 		return operand, nil
 	}

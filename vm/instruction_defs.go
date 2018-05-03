@@ -6,11 +6,6 @@ var Instructions = []*Instruction{makeNop(), makeMoveMemToReg(), makeMoveValToRe
 	makeMoveRegToReg(), makeAddIRegToReg(), makeAddFRegToReg(), makeAndRegToReg(), makeOrRegToReg(), makeXorRegToReg(),
 	makeRotReg(), makeJmpIfEq(), makeHalt()}
 
-func NewInstr() *Instruction {
-	var instr = &Instruction{}
-	return instr
-}
-
 func makeNop() (instr *Instruction) {
 	instr = NewInstr()
 	instr.Opcode = "nop"
@@ -38,6 +33,7 @@ func makeMoveMemToReg() (instr *Instruction) {
 	instr.OpcodeNibble = 0x1
 	instr.Operands = []Operand{NewOperandBlank(OperandMemory), NewOperandBlank(OperandRegister)}
 	instr.Format = instr.Opcode + " [%x] -> r%x"
+	instr.DestOperandIndex = 1
 	instr.Execute = func(vm *VM) {
 		vm.doMoveMemToReg(instr.Operands[0].Value, instr.Operands[1].Value)
 	}
@@ -59,6 +55,7 @@ func makeMoveValToReg() (instr *Instruction) {
 	instr.OpcodeNibble = 0x2
 	instr.Operands = []Operand{NewOperandBlank(OperandValue), NewOperandBlank(OperandRegister)}
 	instr.Format = instr.Opcode + " %x -> r%x"
+	instr.DestOperandIndex = 1
 	instr.Execute = func(vm *VM) {
 		vm.doMoveValToReg(instr.Operands[0].Value, instr.Operands[1].Value)
 	}
@@ -80,6 +77,7 @@ func makeMoveRegToMem() (instr *Instruction) {
 	instr.OpcodeNibble = 0x3
 	instr.Operands = []Operand{NewOperandBlank(OperandRegister), NewOperandBlank(OperandMemory)}
 	instr.Format = instr.Opcode + " r%x -> [%x]"
+	instr.DestOperandIndex = 1
 	instr.Execute = func(vm *VM) {
 		vm.doMoveRegToMem(instr.Operands[0].Value, instr.Operands[1].Value)
 	}
@@ -101,6 +99,7 @@ func makeMoveRegToReg() (instr *Instruction) {
 	instr.Opcode = "mov"
 	instr.OpcodeNibble = 0x4
 	instr.Format = instr.Opcode + " r%x -> r%x"
+	instr.DestOperandIndex = 1
 	instr.Operands = []Operand{NewOperandBlank(OperandRegister), NewOperandBlank(OperandRegister)}
 	instr.Execute = func(vm *VM) {
 		vm.doMoveRegToReg(instr.Operands[0].Value, instr.Operands[1].Value)
@@ -123,6 +122,7 @@ func makeAddIRegToReg() (instr *Instruction) {
 	instr.OpcodeNibble = 0x5
 	instr.Operands = []Operand{NewOperandBlank(OperandRegister), NewOperandBlank(OperandRegister), NewOperandBlank(OperandRegister)}
 	instr.Format = instr.Opcode + " r%x, r%x -> r%x"
+	instr.DestOperandIndex = 2
 	instr.Execute = func(vm *VM) {
 		vm.doAddIRegToReg(instr.Operands[0].Value, instr.Operands[1].Value, instr.Operands[2].Value)
 	}
@@ -145,6 +145,7 @@ func makeAddFRegToReg() (instr *Instruction) {
 	instr.OpcodeNibble = 0x6
 	instr.Operands = []Operand{NewOperandBlank(OperandRegister), NewOperandBlank(OperandRegister), NewOperandBlank(OperandRegister)}
 	instr.Format = instr.Opcode + " r%x, r%x -> r%x"
+	instr.DestOperandIndex = 2
 	instr.Execute = func(vm *VM) {
 		vm.doAddFRegToReg(instr.Operands[0].Value, instr.Operands[1].Value, instr.Operands[2].Value)
 	}
@@ -167,6 +168,7 @@ func makeOrRegToReg() (instr *Instruction) {
 	instr.OpcodeNibble = 0x7
 	instr.Operands = []Operand{NewOperandBlank(OperandRegister), NewOperandBlank(OperandRegister), NewOperandBlank(OperandRegister)}
 	instr.Format = instr.Opcode + " r%x, r%x -> r%x"
+	instr.DestOperandIndex = 2
 	instr.Execute = func(vm *VM) {
 		vm.doOrRegWithReg(instr.Operands[0].Value, instr.Operands[1].Value, instr.Operands[2].Value)
 	}
@@ -189,6 +191,7 @@ func makeAndRegToReg() (instr *Instruction) {
 	instr.OpcodeNibble = 0x8
 	instr.Operands = []Operand{NewOperandBlank(OperandRegister), NewOperandBlank(OperandRegister), NewOperandBlank(OperandRegister)}
 	instr.Format = instr.Opcode + " r%x, r%x -> r%x"
+	instr.DestOperandIndex = 2
 	instr.Execute = func(vm *VM) {
 		vm.doAndRegWithReg(instr.Operands[0].Value, instr.Operands[1].Value, instr.Operands[2].Value)
 	}
@@ -211,6 +214,7 @@ func makeXorRegToReg() (instr *Instruction) {
 	instr.OpcodeNibble = 0x9
 	instr.Operands = []Operand{NewOperandBlank(OperandRegister), NewOperandBlank(OperandRegister), NewOperandBlank(OperandRegister)}
 	instr.Format = instr.Opcode + " r%x, r%x -> r%x"
+	instr.DestOperandIndex = 2
 	instr.Execute = func(vm *VM) {
 		vm.doXorRegWithReg(instr.Operands[0].Value, instr.Operands[1].Value, instr.Operands[2].Value)
 	}
@@ -234,6 +238,7 @@ func makeRotReg() (instr *Instruction) {
 	instr.OpcodeNibble = 0xa
 	instr.Operands = []Operand{NewOperandBlank(OperandRegister), NewOperandBlank(OperandValue)}
 	instr.Format = instr.Opcode + " r%x, %x"
+	instr.DestOperandIndex = 0
 	instr.Execute = func(vm *VM) {
 		vm.doRotReg(instr.Operands[0].Value, instr.Operands[1].Value)
 	}
@@ -255,6 +260,7 @@ func makeJmpIfEq() (instr *Instruction) {
 	instr.OpcodeNibble = 0xb
 	instr.Operands = []Operand{NewOperandBlank(OperandValue), NewOperandBlank(OperandRegister)}
 	instr.Format = instr.Opcode + " %x, r%x"
+	instr.DestOperandIndex = -1
 	instr.Execute = func(vm *VM) {
 		vm.doJmpIfEq(instr.Operands[0].Value, instr.Operands[1].Value)
 	}
