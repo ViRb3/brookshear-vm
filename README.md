@@ -26,8 +26,8 @@ Examples:
 
 Bytecode | Instruction  | Comment
 -----------------------------------------------------------------------
-D104     | jmpeq +4, r1 | // branch forward by 4 bytes (2 instructions)
-D312     | jmpeq -2, r3 | // branch backward by 2 bytes (1 instruction)
+D104     | jmpeq +4, r1 | ; branch forward by 4 bytes (2 instructions)
+D312     | jmpeq -2, r3 | ; branch backward by 2 bytes (1 instruction)
 
 ```
 
