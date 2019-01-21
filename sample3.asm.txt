@@ -1,3 +1,0 @@
-mov 15 -> r0
-mov r0 -> [ff]
-halt

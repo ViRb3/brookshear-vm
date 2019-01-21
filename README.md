@@ -19,6 +19,14 @@ A [brookshear](https://uk.mathworks.com/matlabcentral/fileexchange/22593-extende
 * Decompile bytecode from a binary file to assembly instructions
 * Extra instruction *(opcode `0xD`)* for relative (offset) branch
 
+## [Examples](./examples)
+
+## [Releases](./releases)
+
+## Help
+* For general help run with argument `-h` or `--help`
+* For help on the extra instructions run the command `extendedHelp`
+
 ## Relative branch if equal
 
 ```
@@ -38,9 +46,3 @@ R - destination register  [0-F]
 O - branch direction      [0-1] : 0 for +/forward, 1 for -/backward
 X - offset                [0-F]
 ```
-
-## [Releases](./releases)
-
-*For general help run with argument `-h` or `--help`*
-
-*For help on the extra instructions run the command `extendedHelp`*

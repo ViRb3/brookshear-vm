@@ -1,0 +1,19 @@
+; loop demo, jumps back 4 times before exiting
+
+nop
+# i
+mov fa -> r1
+# upper bound
+mov ff -> r0
+mov 1 -> r3
+
+# r2++
+addi r2, r3 -> r2
+mov r2 -> [ff]
+# r1++
+addi r1, r3 -> r1
+# break loop
+jmpeq 12, r1
+# always true
+jmpeq 8, r0
+halt
