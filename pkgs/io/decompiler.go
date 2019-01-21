@@ -3,7 +3,7 @@ package io
 import (
 	"os"
 	"github.com/pkg/errors"
-	"brookshear-vm/vm"
+	"brookshear-vm/pkgs/vm"
 	"io"
 )
 

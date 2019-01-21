@@ -1,6 +1,6 @@
 package main
 
-import "brookshear-vm/cmd"
+import "brookshear-vm/pkgs/cmd"
 
 func main() {
 	cmd.Execute()

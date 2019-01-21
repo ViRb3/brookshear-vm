@@ -2,9 +2,9 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"brookshear-vm/vm"
+	"brookshear-vm/pkgs/vm"
 	"fmt"
-	"brookshear-vm/io"
+	"brookshear-vm/pkgs/io"
 )
 
 // runCmd represents the run command

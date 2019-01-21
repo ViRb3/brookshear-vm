@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"brookshear-vm/io"
+	"brookshear-vm/pkgs/io"
 )
 
 // compileCmd represents the compile command

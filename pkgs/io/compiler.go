@@ -1,7 +1,7 @@
 package io
 
 import (
-	"brookshear-vm/vm"
+	"brookshear-vm/pkgs/vm"
 	"os"
 )
 
