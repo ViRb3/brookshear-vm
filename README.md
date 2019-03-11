@@ -21,7 +21,8 @@ A [brookshear](https://uk.mathworks.com/matlabcentral/fileexchange/22593-extende
 
 ## [Examples](./examples)
 
-## [Releases](./releases)
+## Download
+Check **Releases**
 
 ## Help
 * For general help run with argument `-h` or `--help`
