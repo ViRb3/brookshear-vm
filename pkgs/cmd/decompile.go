@@ -23,12 +23,10 @@ func decompile(cmd *cobra.Command, args []string) {
 }
 
 func doDecompile() error {
-	//fmt.Println("Decompiling from file:", Input)
 	instrStr, err := io.Decompile(Input)
 	if err != nil {
 		return err
 	}
-	//fmt.Println("Done!")
 
 	for _, instr := range instrStr {
 		fmt.Println(instr.ToString())

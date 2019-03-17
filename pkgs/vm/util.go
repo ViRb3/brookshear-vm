@@ -23,11 +23,6 @@ func ConvBitStringArrayToByte(bitArray string) byte {
 	return byte(intByte)
 }
 
-//func RotateLCircular(a *[]bool, i int) {
-//	x, b := (*a)[:i], (*a)[i:]
-//	*a = append(b, x...)
-//}
-
 func RotateRCircular(a *string, i int) {
 	for i > len(*a) {
 		i = i - len(*a)

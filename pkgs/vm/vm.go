@@ -47,10 +47,7 @@ func (vm *VM) Run(instrs []*Instruction) error {
 	vm.loadInstructionsInMemory(instrs)
 
 	vm.printIfVerbose("Execution flow:\n")
-	if err := vm.instrLoop(); err != nil {
-		return err
-	}
-	return nil
+	return vm.instrLoop()
 }
 
 func (vm *VM) instrLoop() error {
