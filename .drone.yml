@@ -6,6 +6,12 @@ platform:
   arch: amd64
 
 steps:
+- name: test
+  image: golang:latest
+  commands:
+  - go vet || echo "Potential problems detected"
+  - go test -race
+
 - name: build
   image: golang:latest
   commands:
@@ -16,6 +22,7 @@ steps:
   - GOOS=linux GOARCH=arm64 go build -ldflags "-s -w" -o "release/$DRONE_REPO_NAME-arm64"
   - GOOS=windows GOARCH=386 go build -ldflags "-s -w" -o "release/$DRONE_REPO_NAME-386.exe"
   - GOOS=windows GOARCH=amd64 go build -ldflags "-s -w" -o "release/$DRONE_REPO_NAME-amd64.exe"
+
 - name: publish
   image: plugins/github-release
   when:
