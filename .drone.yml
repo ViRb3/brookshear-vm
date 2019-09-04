@@ -17,13 +17,15 @@ steps:
   commands:
   - ln -s $PWD /build
   - cd /build
+  - go mod download
   - mkdir release
-  - GOOS=linux GOARCH=386 go build -ldflags "-s -w" -o "release/$DRONE_REPO_NAME-386"
-  - GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o "release/$DRONE_REPO_NAME-amd64"
-  - GOOS=linux GOARCH=arm go build -ldflags "-s -w" -o "release/$DRONE_REPO_NAME-arm"
-  - GOOS=linux GOARCH=arm64 go build -ldflags "-s -w" -o "release/$DRONE_REPO_NAME-arm64"
-  - GOOS=windows GOARCH=386 go build -ldflags "-s -w" -o "release/$DRONE_REPO_NAME-386.exe"
-  - GOOS=windows GOARCH=amd64 go build -ldflags "-s -w" -o "release/$DRONE_REPO_NAME-amd64.exe"
+  - GOOS=linux GOARCH=386 go build -ldflags "-s -w" -o "release/$DRONE_REPO_NAME-386" &
+  - GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o "release/$DRONE_REPO_NAME-amd64" &
+  - GOOS=linux GOARCH=arm go build -ldflags "-s -w" -o "release/$DRONE_REPO_NAME-arm" &
+  - GOOS=linux GOARCH=arm64 go build -ldflags "-s -w" -o "release/$DRONE_REPO_NAME-arm64" &
+  - GOOS=windows GOARCH=386 go build -ldflags "-s -w" -o "release/$DRONE_REPO_NAME-386.exe" &
+  - GOOS=windows GOARCH=amd64 go build -ldflags "-s -w" -o "release/$DRONE_REPO_NAME-amd64.exe" &
+  - wait
 
 - name: publish
   image: plugins/github-release
